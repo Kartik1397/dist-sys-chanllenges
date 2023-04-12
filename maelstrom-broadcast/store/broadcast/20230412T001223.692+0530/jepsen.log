@@ -1,0 +1,335 @@
+2023-04-12 00:12:23,711{GMT}	INFO	[jepsen test runner] jepsen.core: Test version f752508c6c50e6bfcd23103f55d0683e9803ae8d (plus uncommitted changes)
+2023-04-12 00:12:23,711{GMT}	INFO	[jepsen test runner] jepsen.core: Command line:
+lein run test -w broadcast --bin /home/ktk/go/bin/maelstrom-broadcast --node-count 1 --time-limit 20 --rate 10
+2023-04-12 00:12:23,803{GMT}	INFO	[jepsen test runner] jepsen.core: Running test:
+{:args []
+ :remote
+ #jepsen.control.retry.Remote{:remote #jepsen.control.scp.Remote{:cmd-remote #jepsen.control.sshj.SSHJRemote{:concurrency-limit 6,
+                                                                                                             :conn-spec nil,
+                                                                                                             :client nil,
+                                                                                                             :semaphore nil},
+                                                                 :conn-spec nil},
+                              :conn nil}
+ :log-net-send false
+ :node-count 1
+ :availability nil
+ :max-txn-length 4
+ :concurrency 1
+ :db
+ #object[maelstrom.db$db$reify__16142
+         "0x64a009e7"
+         "maelstrom.db$db$reify__16142@64a009e7"]
+ :max-writes-per-key 16
+ :leave-db-running? false
+ :name "broadcast"
+ :logging-json? false
+ :start-time
+ #object[org.joda.time.DateTime "0x3cd3cf6b" "2023-04-12T00:12:23.692+05:30"]
+ :nemesis-interval 10
+ :net
+ #object[maelstrom.net$jepsen_net$reify__15251
+         "0x6f3f2340"
+         "maelstrom.net$jepsen_net$reify__15251@6f3f2340"]
+ :client
+ #object[maelstrom.workload.broadcast$client$reify__16644
+         "0x179dc2"
+         "maelstrom.workload.broadcast$client$reify__16644@179dc2"]
+ :barrier
+ #object[java.util.concurrent.CyclicBarrier
+         "0x1802badc"
+         "java.util.concurrent.CyclicBarrier@1802badc"]
+ :log-stderr false
+ :pure-generators true
+ :ssh {:dummy? true}
+ :rate 10.0
+ :checker
+ #object[jepsen.checker$compose$reify__11881
+         "0x3a089620"
+         "jepsen.checker$compose$reify__11881@3a089620"]
+ :argv
+ ("test"
+  "-w"
+  "broadcast"
+  "--bin"
+  "/home/ktk/go/bin/maelstrom-broadcast"
+  "--node-count"
+  "1"
+  "--time-limit"
+  "20"
+  "--rate"
+  "10")
+ :nemesis
+ (jepsen.nemesis.ReflCompose
+  {:fm {:start-partition 0,
+        :stop-partition 0,
+        :kill 1,
+        :start 1,
+        :pause 1,
+        :resume 1},
+   :nemeses [#unprintable "jepsen.nemesis.combined$partition_nemesis$reify__16416@2cbb9702"
+             #unprintable "jepsen.nemesis.combined$db_nemesis$reify__16397@10fef6da"]})
+ :nodes ["n0"]
+ :test-count 1
+ :latency {:mean 0, :dist :constant}
+ :bin "/home/ktk/go/bin/maelstrom-broadcast"
+ :generator
+ ((jepsen.generator.Synchronize
+   {:gen (jepsen.generator.TimeLimit
+          {:limit 20000000000,
+           :cutoff nil,
+           :gen (jepsen.generator.Any
+                 {:gens [(jepsen.generator.OnThreads
+                          {:f #{:nemesis},
+                           :context-filter #object[jepsen.generator.context$make_thread_filter$lazy_filter__9167
+                                                   "0x56587330"
+                                                   "jepsen.generator.context$make_thread_filter$lazy_filter__9167@56587330"],
+                           :gen nil})
+                         (jepsen.generator.OnThreads
+                          {:f #jepsen.generator.context.AllBut{:element :nemesis},
+                           :context-filter #object[jepsen.generator.context$make_thread_filter$lazy_filter__9167
+                                                   "0x227cba85"
+                                                   "jepsen.generator.context$make_thread_filter$lazy_filter__9167@227cba85"],
+                           :gen (jepsen.generator.Stagger
+                                 {:dt 200000000,
+                                  :next-time nil,
+                                  :gen (jepsen.generator.Mix
+                                        {:i 0,
+                                         :gens [({:f :broadcast, :value 0}
+                                                 {:f :broadcast, :value 1}
+                                                 {:f :broadcast, :value 2}
+                                                 {:f :broadcast, :value 3}
+                                                 {:f :broadcast, :value 4}
+                                                 {:f :broadcast, :value 5}
+                                                 {:f :broadcast, :value 6}
+                                                 {:f :broadcast, :value 7}
+                                                 ...)
+                                                ({:f :read}
+                                                 {:f :read}
+                                                 {:f :read}
+                                                 {:f :read}
+                                                 {:f :read}
+                                                 {:f :read}
+                                                 {:f :read}
+                                                 {:f :read}
+                                                 ...)]})})})]})})})
+  (jepsen.generator.Synchronize
+   {:gen (jepsen.generator.OnThreads
+          {:f #{:nemesis},
+           :context-filter #object[jepsen.generator.context$make_thread_filter$lazy_filter__9167
+                                   "0x5091456c"
+                                   "jepsen.generator.context$make_thread_filter$lazy_filter__9167@5091456c"],
+           :gen ()})})
+  (jepsen.generator.Synchronize
+   {:gen {:type :log, :value "Waiting for recovery..."}})
+  (jepsen.generator.Synchronize {:gen {:type :sleep, :value 10}})
+  (jepsen.generator.Synchronize
+   {:gen (jepsen.generator.OnThreads
+          {:f #jepsen.generator.context.AllBut{:element :nemesis},
+           :context-filter #object[jepsen.generator.context$make_thread_filter$lazy_filter__9167
+                                   "0x45c57dbd"
+                                   "jepsen.generator.context$make_thread_filter$lazy_filter__9167@45c57dbd"],
+           :gen (jepsen.generator.EachThread
+                 {:fresh-gen {:f :read, :final? true},
+                  :context-filters #object[clojure.core$promise$reify__8591
+                                           "0x22a5f12"
+                                           {:status :pending, :val nil}],
+                  :gens {}})})}))
+ :log-net-recv false
+ :os
+ #object[maelstrom.net$jepsen_os$reify__15254
+         "0x316975be"
+         "maelstrom.net$jepsen_os$reify__15254@316975be"]
+ :time-limit 20
+ :workload :broadcast
+ :consistency-models [:strict-serializable]
+ :topology :grid}
+
+2023-04-12 00:12:25,582{GMT}	INFO	[jepsen node n0] maelstrom.net: Starting Maelstrom network
+2023-04-12 00:12:25,583{GMT}	INFO	[jepsen test runner] jepsen.db: Tearing down DB
+2023-04-12 00:12:25,585{GMT}	INFO	[jepsen test runner] jepsen.db: Setting up DB
+2023-04-12 00:12:25,587{GMT}	INFO	[jepsen node n0] maelstrom.service: Starting services: (lin-kv lin-tso lww-kv seq-kv)
+2023-04-12 00:12:25,589{GMT}	INFO	[jepsen node n0] maelstrom.db: Setting up n0
+2023-04-12 00:12:25,589{GMT}	INFO	[jepsen node n0] maelstrom.process: launching /home/ktk/go/bin/maelstrom-broadcast []
+2023-04-12 00:12:25,607{GMT}	INFO	[jepsen test runner] jepsen.core: Relative time begins now
+2023-04-12 00:12:25,620{GMT}	INFO	[jepsen worker 0] jepsen.util: 0	:invoke	:broadcast	0
+2023-04-12 00:12:25,635{GMT}	WARN	[jepsen worker 0] jepsen.generator.interpreter: Process 0 crashed
+clojure.lang.ExceptionInfo: Malformed RPC response. Maelstrom sent node n0 the following request:
+
+{:type "broadcast", :message 0, :msg_id 1}
+
+And expected a response of the form:
+
+{:type (eq "broadcast_ok"), {:k :msg_id} Int, :in_reply_to Int}
+
+... but instead received
+
+{:in_reply_to 1, :msg_id 1, :type "generate_ok"}
+
+This is malformed because:
+
+{:type (not (= "broadcast_ok" "generate_ok"))}
+
+See doc/protocol.md for more guidance.
+	at slingshot.support$stack_trace.invoke(support.clj:201)
+	at maelstrom.client$check_body.invokeStatic(client.clj:188)
+	at maelstrom.client$check_body.invoke(client.clj:181)
+	at maelstrom.workload.broadcast$fn__16565$broadcast_BANG___16566.invoke(broadcast.clj:27)
+	at maelstrom.workload.broadcast$fn__16565$broadcast_BANG___16566.invoke(broadcast.clj:27)
+	at maelstrom.workload.broadcast$client$reify__16644.invoke_BANG_(broadcast.clj:203)
+	at jepsen.client.Validate.invoke_BANG_(client.clj:83)
+	at jepsen.generator.interpreter.ClientWorker.invoke_BANG_(interpreter.clj:65)
+	at jepsen.generator.interpreter$spawn_worker$fn__12908$fn__12909.invoke(interpreter.clj:140)
+	at jepsen.generator.interpreter$spawn_worker$fn__12908.invoke(interpreter.clj:123)
+	at clojure.core$binding_conveyor_fn$fn__5823.invoke(core.clj:2047)
+	at clojure.lang.AFn.call(AFn.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:630)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+2023-04-12 00:12:25,785{GMT}	INFO	[jepsen worker 0] jepsen.util: 1	:invoke	:read	nil
+2023-04-12 00:12:25,791{GMT}	INFO	[jepsen worker 0] jepsen.util: 1	:ok	:read	[0]
+2023-04-12 00:12:25,936{GMT}	INFO	[jepsen worker 0] jepsen.util: 1	:invoke	:broadcast	1
+2023-04-12 00:12:25,969{GMT}	WARN	[jepsen worker 0] jepsen.generator.interpreter: Process 1 crashed
+clojure.lang.ExceptionInfo: Malformed RPC response. Maelstrom sent node n0 the following request:
+
+{:type "broadcast", :message 1, :msg_id 2}
+
+And expected a response of the form:
+
+{:type (eq "broadcast_ok"), {:k :msg_id} Int, :in_reply_to Int}
+
+... but instead received
+
+{:in_reply_to 2, :msg_id 2, :type "generate_ok"}
+
+This is malformed because:
+
+{:type (not (= "broadcast_ok" "generate_ok"))}
+
+See doc/protocol.md for more guidance.
+	at slingshot.support$stack_trace.invoke(support.clj:201)
+	at maelstrom.client$check_body.invokeStatic(client.clj:188)
+	at maelstrom.client$check_body.invoke(client.clj:181)
+	at maelstrom.workload.broadcast$fn__16565$broadcast_BANG___16566.invoke(broadcast.clj:27)
+	at maelstrom.workload.broadcast$fn__16565$broadcast_BANG___16566.invoke(broadcast.clj:27)
+	at maelstrom.workload.broadcast$client$reify__16644.invoke_BANG_(broadcast.clj:203)
+	at jepsen.client.Validate.invoke_BANG_(client.clj:83)
+	at jepsen.generator.interpreter.ClientWorker.invoke_BANG_(interpreter.clj:65)
+	at jepsen.generator.interpreter$spawn_worker$fn__12908$fn__12909.invoke(interpreter.clj:140)
+	at jepsen.generator.interpreter$spawn_worker$fn__12908.invoke(interpreter.clj:123)
+	at clojure.core$binding_conveyor_fn$fn__5823.invoke(core.clj:2047)
+	at clojure.lang.AFn.call(AFn.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:630)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+2023-04-12 00:12:26,126{GMT}	INFO	[jepsen worker 0] jepsen.util: 2	:invoke	:broadcast	2
+2023-04-12 00:12:26,161{GMT}	WARN	[jepsen worker 0] jepsen.generator.interpreter: Process 2 crashed
+clojure.lang.ExceptionInfo: Malformed RPC response. Maelstrom sent node n0 the following request:
+
+{:type "broadcast", :message 2, :msg_id 1}
+
+And expected a response of the form:
+
+{:type (eq "broadcast_ok"), {:k :msg_id} Int, :in_reply_to Int}
+
+... but instead received
+
+{:in_reply_to 1, :msg_id 1, :type "generate_ok"}
+
+This is malformed because:
+
+{:type (not (= "broadcast_ok" "generate_ok"))}
+
+See doc/protocol.md for more guidance.
+	at slingshot.support$stack_trace.invoke(support.clj:201)
+	at maelstrom.client$check_body.invokeStatic(client.clj:188)
+	at maelstrom.client$check_body.invoke(client.clj:181)
+	at maelstrom.workload.broadcast$fn__16565$broadcast_BANG___16566.invoke(broadcast.clj:27)
+	at maelstrom.workload.broadcast$fn__16565$broadcast_BANG___16566.invoke(broadcast.clj:27)
+	at maelstrom.workload.broadcast$client$reify__16644.invoke_BANG_(broadcast.clj:203)
+	at jepsen.client.Validate.invoke_BANG_(client.clj:83)
+	at jepsen.generator.interpreter.ClientWorker.invoke_BANG_(interpreter.clj:65)
+	at jepsen.generator.interpreter$spawn_worker$fn__12908$fn__12909.invoke(interpreter.clj:140)
+	at jepsen.generator.interpreter$spawn_worker$fn__12908.invoke(interpreter.clj:123)
+	at clojure.core$binding_conveyor_fn$fn__5823.invoke(core.clj:2047)
+	at clojure.lang.AFn.call(AFn.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:630)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+2023-04-12 00:12:26,191{GMT}	INFO	[jepsen worker 0] jepsen.util: 3	:invoke	:read	nil
+2023-04-12 00:12:26,193{GMT}	INFO	[jepsen worker 0] jepsen.util: 3	:ok	:read	[1 2]
+2023-04-12 00:12:26,325{GMT}	INFO	[jepsen worker 0] jepsen.util: 3	:invoke	:broadcast	3
+2023-04-12 00:12:26,359{GMT}	WARN	[jepsen worker 0] jepsen.generator.interpreter: Process 3 crashed
+clojure.lang.ExceptionInfo: Malformed RPC response. Maelstrom sent node n0 the following request:
+
+{:type "broadcast", :message 3, :msg_id 2}
+
+And expected a response of the form:
+
+{:type (eq "broadcast_ok"), {:k :msg_id} Int, :in_reply_to Int}
+
+... but instead received
+
+{:in_reply_to 2, :msg_id 2, :type "generate_ok"}
+
+This is malformed because:
+
+{:type (not (= "broadcast_ok" "generate_ok"))}
+
+See doc/protocol.md for more guidance.
+	at slingshot.support$stack_trace.invoke(support.clj:201)
+	at maelstrom.client$check_body.invokeStatic(client.clj:188)
+	at maelstrom.client$check_body.invoke(client.clj:181)
+	at maelstrom.workload.broadcast$fn__16565$broadcast_BANG___16566.invoke(broadcast.clj:27)
+	at maelstrom.workload.broadcast$fn__16565$broadcast_BANG___16566.invoke(broadcast.clj:27)
+	at maelstrom.workload.broadcast$client$reify__16644.invoke_BANG_(broadcast.clj:203)
+	at jepsen.client.Validate.invoke_BANG_(client.clj:83)
+	at jepsen.generator.interpreter.ClientWorker.invoke_BANG_(interpreter.clj:65)
+	at jepsen.generator.interpreter$spawn_worker$fn__12908$fn__12909.invoke(interpreter.clj:140)
+	at jepsen.generator.interpreter$spawn_worker$fn__12908.invoke(interpreter.clj:123)
+	at clojure.core$binding_conveyor_fn$fn__5823.invoke(core.clj:2047)
+	at clojure.lang.AFn.call(AFn.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:630)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+2023-04-12 00:12:26,491{GMT}	INFO	[jepsen worker 0] jepsen.util: 4	:invoke	:read	nil
+2023-04-12 00:12:26,497{GMT}	INFO	[jepsen worker 0] jepsen.util: 4	:ok	:read	[3]
+2023-04-12 00:12:26,615{GMT}	INFO	[jepsen worker 0] jepsen.util: 4	:invoke	:broadcast	4
+2023-04-12 00:12:26,647{GMT}	WARN	[jepsen worker 0] jepsen.generator.interpreter: Process 4 crashed
+clojure.lang.ExceptionInfo: Malformed RPC response. Maelstrom sent node n0 the following request:
+
+{:type "broadcast", :message 4, :msg_id 2}
+
+And expected a response of the form:
+
+{:type (eq "broadcast_ok"), {:k :msg_id} Int, :in_reply_to Int}
+
+... but instead received
+
+{:in_reply_to 2, :msg_id 2, :type "generate_ok"}
+
+This is malformed because:
+
+{:type (not (= "broadcast_ok" "generate_ok"))}
+
+See doc/protocol.md for more guidance.
+	at slingshot.support$stack_trace.invoke(support.clj:201)
+	at maelstrom.client$check_body.invokeStatic(client.clj:188)
+	at maelstrom.client$check_body.invoke(client.clj:181)
+	at maelstrom.workload.broadcast$fn__16565$broadcast_BANG___16566.invoke(broadcast.clj:27)
+	at maelstrom.workload.broadcast$fn__16565$broadcast_BANG___16566.invoke(broadcast.clj:27)
+	at maelstrom.workload.broadcast$client$reify__16644.invoke_BANG_(broadcast.clj:203)
+	at jepsen.client.Validate.invoke_BANG_(client.clj:83)
+	at jepsen.generator.interpreter.ClientWorker.invoke_BANG_(interpreter.clj:65)
+	at jepsen.generator.interpreter$spawn_worker$fn__12908$fn__12909.invoke(interpreter.clj:140)
+	at jepsen.generator.interpreter$spawn_worker$fn__12908.invoke(interpreter.clj:123)
+	at clojure.core$binding_conveyor_fn$fn__5823.invoke(core.clj:2047)
+	at clojure.lang.AFn.call(AFn.java:18)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:630)
+	at java.base/java.lang.Thread.run(Thread.java:832)
+2023-04-12 00:12:26,742{GMT}	INFO	[Jepsen shutdown hook] jepsen.core: Downloading DB logs before JVM shutdown...
